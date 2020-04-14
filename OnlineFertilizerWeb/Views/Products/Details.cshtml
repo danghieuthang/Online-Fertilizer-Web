@@ -1,0 +1,126 @@
+﻿@model OnlineFertilizerWeb.Models.Comment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('/Content/images/bg_1.jpg');">
+    <div class="container">
+
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9  text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span class="mr-2"><a href="index.html">Product</a></span> <span>Product Single</span></p>
+                <h1 class="mb-0 bread">Product Single</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5">
+                @{
+                    int index = ViewBag.Product.Image.LastIndexOf("\\") + 1;
+                    var realPathImage = ViewBag.Product.Image.Substring(index);
+                }
+                <a href="" class="image-popup"><img src="~/Content/images/@realPathImage" class="img-fluid" alt="@ViewBag.Product.Title"></a>
+            </div>
+            <div class="col-lg-6 product-details pl-md-5">
+                <h3>@ViewBag.Product.Title</h3>
+                <div class="rating d-flex">
+                    <p class="text-left mr-4">
+                        <a href="#" class="mr-2">5.0</a>
+                        <a href="#"><span class="ion-ios-star-outline"></span></a>
+                        <a href="#"><span class="ion-ios-star-outline"></span></a>
+                        <a href="#"><span class="ion-ios-star-outline"></span></a>
+                        <a href="#"><span class="ion-ios-star-outline"></span></a>
+                        <a href="#"><span class="ion-ios-star-outline"></span></a>
+                    </p>
+                    <p class="text-left mr-4">
+                        <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
+                    </p>
+                    <p class="text-left">
+                        <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+                    </p>
+                </div>
+                <p class="price"><span>@ViewBag.Product.Price VND</span></p>
+                <p>
+                    @ViewBag.Product.Description
+                </p>
+                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                {
+                    <div class="row mt-4">
+                        <div class="w-100"></div>
+                        <div class="input-group col-md-6 d-flex mb-3">
+                            <span class="input-group-btn mr-2">
+                                <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                                    <i class="ion-ios-remove"></i>
+                                </button>
+                            </span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            <span class="input-group-btn ml-2">
+                                <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                                    <i class="ion-ios-add"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="w-100"></div>
+                        
+                    </div>
+                    <input type="hidden" name="ID" value="@ViewBag.Product.ID" />
+                    //   @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                    <input type="submit" value="Add To cart" class="btn btn-black py-3 px-5" />
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    @using (Html.BeginForm("PostComment", "Comment", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="comment">Your Comment</label>
+            @Html.TextAreaFor(c => c.Message, new { @class = "form-control", @rows = "3" })
+            @Html.ValidationMessageFor(c => c.Message, "", new { @class = "badge badge-danger" })
+            <span class="badge badge-danger">@ViewBag.error</span>
+        </div>
+        <input type="hidden" name="ProductID" value="@ViewBag.Product.ID" />
+        <div>
+            <button type="submit" class="btn btn-primary justify-content-end">Send</button>
+        </div>
+    }
+    <div class="card card-comments mb-3 wow fadeIn">
+        <div class="card-header font-weight-bold">@ViewBag.Comments.Count comments</div>
+        @if (ViewBag.Comments.Count > 0)
+        {
+            foreach (var comment in ViewBag.Comments)
+            {
+                <div class="card-body">
+                    <div class="media d-block d-md-flex mt-4">
+                        <img class="d-flex mb-3 mx-auto " src="~/Content/images/img_avatar.png" width="200px" height="auto" alt="Generic placeholder image">
+                        <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                            <h5 class="mt-0 font-weight-bold">
+                                @(comment.Account.Name)
+                                <a href="" class="pull-right">
+                                    <i class="fa fa-reply"></i>
+                                </a>
+                            </h5>
+                            <h6 style="font-style:italic">Post on @comment.CreateDate</h6>
+                            @(comment.Message)
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+
+    <!--/.Comments-->
+
+
+</div>

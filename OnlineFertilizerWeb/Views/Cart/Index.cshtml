@@ -1,0 +1,137 @@
+﻿@model OnlineFertilizerWeb.Domain.Cart
+@{
+    ViewBag.Title = "Your Cart";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+
+<div class="hero-wrap hero-bread" style="background-image: url('/Content/images/bg_3.jpg');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9  text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="@Url.Action("Index","Products")" class="btn-success">Home</a></span> <span class="text-success">Cart</span></p>
+                <h1 class="mb-0 bread text-success">My Cart</h1>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.Products.Count() == 0)
+{
+    if (ViewBag.Message != null)
+    {
+        <h1 class="text-center text-success">
+            @ViewBag.Message
+        </h1>
+    }
+    if (ViewBag.Message == null)
+    {
+        <h1 class="text-center text-danger">
+            Your cart have no item
+        </h1>
+    }
+
+}
+
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        @if (Model.Products.Count() != 0)
+        {
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>Product Image</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Products)
+                                {
+                                    using (Html.BeginForm("Update", "Cart"))
+                                    {
+                                        <tr class="text-center">
+                                            <td class="image-prod"><div class="img" style="background-image:url(/Content/images/product-3.jpg);"></div></td>
+                                            <td class="product-name">
+                                                <h3>@item.Product.Title</h3>
+                                                <p style="overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2">@item.Product.Description</p>
+                                            </td>
+
+                                            <td class="price">@item.Product.Price VND</td>
+
+                                            <td class="quantity">
+                                                <div class="input-group mb-3 d-flex">
+                                                    <span class="input-group-btn mr-2">
+                                                        <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" onclick="var quantity = parseInt($('#quantity_@item.Product.ID').val()); if (quantity > 1) { $('#quantity_@item.Product.ID').val(quantity - 1);  }">
+                                                            <i class="ion-ios-remove" onclick=" "></i>
+                                                        </button>
+                                                    </span>
+                                                    <input type="text" id="quantity_@item.Product.ID" name="quantity" class="quantity form-control input-number" value="@item.Quantity" min="1" max="100">
+                                                    <span class="input-group-btn ml-2">
+                                                        <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" onclick="var quantity = parseInt($('#quantity_@item.Product.ID').val()); $('#quantity_@item.Product.ID').val(quantity + 1);">
+                                                            <i class="ion-ios-add"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
+
+                                            <td class="total">@(item.Product.Price * item.Quantity) VND</td>
+                                            <td class="product-remove">
+                                                <input type="hidden" name="ID" value="@item.Product.ID" />
+                                                <button type="submit" class="btn btn-primary py-3 px-4">Update</button>
+                                            </td>
+                                            <td class="product-remove"> <a href="@Url.Action("Remove", "Cart", new { ID = item.Product.ID })" class="btn btn-danger py-3 px-4">Remove</a></td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row justify-content-end">
+            <div class="col-lg-4 mt-5 cart-wrap ">
+                @Html.ActionLink("Countinues Shopping", "ContinuesShopping", null, new { @class = "btn btn-primary py-3 px-4" })
+            </div>
+            @if (Model.Products.Count() != 0)
+            {
+                <div class="col-lg-4 mt-5 cart-wrap ">
+                    <div class="cart-total mb-3">
+                        <h3>Cart Totals</h3>
+                        <p class="d-flex">
+                            <span>Subtotal</span>
+                            <span>$@Model.Total()</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Delivery</span>
+                            <span>$0.00</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Discount</span>
+                            <span>$3.00</span>
+                        </p>
+                        <hr>
+                        <p class="d-flex total-price">
+                            <span>Total</span>
+                            <span>$@Model.Total()</span>
+                        </p>
+                    </div>
+                    <p><a href="@Url.Action("Checkout", "Cart")" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</section>
+

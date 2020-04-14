@@ -1,0 +1,80 @@
+﻿@model IEnumerable<OnlineFertilizerWeb.Models.Order>
+@{
+    ViewBag.title = "History";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="text-center">
+            <h3 class="text-primary text-center" style="text-transform:uppercase;">History</h3>
+        </div>
+        @if (Model.Count() == 0)
+        {
+            <h3 class="text-center text-danger">You was buy 0 product!</h3>
+
+        }
+        @if (Model.Count() > 0)
+        {
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>TransactionID</th>
+                                    <th>Product Image</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Create Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var tran in ViewBag.transactions)
+                                {
+
+                                    <tr class="text-center">
+                                        <td>@tran.ID</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><h4>@tran.Total VND</h4></td>
+                                        <td><h5>@{ DateTime dateTime = tran.CreateDate;
+                                            } @dateTime.ToString("dd/MM/yyyy")</h5></td>
+                                    </tr>
+                                    foreach (var item in Model)
+                                    {
+                                        if (item.TransactionID == tran.ID)
+                                        {
+                                            <tr class="text-center">
+                                                <td></td>
+                                                <td class="image-prod"><div class="img" style="background-image:url(/Content/images/product-3.jpg);"></div></td>
+                                                <td class="product-name">
+                                                    <h3>@item.Product.Title</h3>
+                                                    <p style="overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2">@item.Product.Description</p>
+                                                </td>
+
+                                                <td class="price"><h4>@item.Product.Price VND</h4></td>
+
+                                                <td class="quantity"><h4>@item.Quantity</h4></td>
+                                                <td class="total"><h4>@(item.Product.Price * item.Quantity) VND</h4 ></td>
+                                                <td></td>
+                                            </tr>
+                                            
+                                        }
+
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section> <!-- .section -->

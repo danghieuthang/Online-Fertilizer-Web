@@ -1,0 +1,47 @@
+﻿@model OnlineFertilizerWeb.Models.Account
+@{
+    ViewBag.title = "Login";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+
+<div class="row justify-content-md-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1>Login</h1> 
+            </div>
+            <div class="card-body">
+                <h3 class="text-danger text-center">@ViewBag.error</h3>
+                <h3 class="text-info text-center">@ViewBag.registerStatus</h3>
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Email)
+                        @Html.TextBoxFor(m => Model.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+
+                    </div>
+                    <input type="hidden" value="username" name="Name" />
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Password)
+                        @Html.PasswordFor(m => Model.Password, new { @class = "form-control", @placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                    </div>
+                   <input type="hidden" name="RePassword" id="RePasswordLogin"/>
+
+                    <input type="hidden" name="returnUrl" value="@Request.QueryString["ReturnUrl"]" />
+                    <div class="form-group text-center">
+                        <input type="submit" name="submit" class="btn btn-primary py-3 px-4" value="Login" />
+                    </div>
+
+                }
+                <div class="text-right">
+                    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-primary" })
+                </div>
+
+            </div>  
+        </div>
+    </div>
+</div>

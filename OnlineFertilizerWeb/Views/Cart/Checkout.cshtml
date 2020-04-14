@@ -1,0 +1,82 @@
+﻿@model OnlineFertilizerWeb.Domain.Cart
+@{
+    ViewBag.title = "Checkout";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="text-center">
+            <h3 class="text-primary text-center" style="text-transform:uppercase;">Checkout</h3>
+        </div>
+        @if (Model == null || Model.Products.Count() == 0)
+        {
+            <h3 class="text-center text-danger">You have no product!</h3>
+            <a href="@Url.Action("Index", "Products")" class="btn btn-primary py-3 px-4 ">Continues shopping</a>
+        }
+        @if (Model.Products.Count() > 0)
+        {
+            <div class="row justify-content-center">
+                <div class="col-xl-5">
+                    <div class="row mt-5 pt-3">
+                        <div class="col-md-12 d-flex mb-5">
+                            <div class="cart-detail cart-total p-3 p-md-4">
+                                <h3 class="billing-heading mb-4">Cart Total</h3>
+                                <p class="d-flex">
+                                    <span>Subtotal</span>
+                                    <span>@Model.Total() VND</span>
+                                </p>
+                                <p class="d-flex">
+                                    <span>Delivery</span>
+                                    <span>0.00 VND</span>
+                                </p>
+                                <p class="d-flex">
+                                    <span>Discount</span>
+                                    <span>0.00 VND</span>
+                                </p>
+                                <hr>
+                                <p class="d-flex total-price">
+                                    <span>Total</span>
+                                    <span>@Model.Total() VND</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="cart-detail p-3 p-md-4">
+                                <h3 class="billing-heading mb-4">Payment Method</h3>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" class="mr-2"> Direct Bank Tranfer</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>
+                                    @using (Html.BeginForm("PlaceAnOrder", "Cart", FormMethod.Post))
+                                    {
+                                        <button type="submit" class="btn btn-primary py-3 px-4">Place An Order</button>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- .col-md-8 -->
+            </div>
+        }
+    </div>
+</section> <!-- .section -->

@@ -1,0 +1,59 @@
+﻿@model OnlineFertilizerWeb.Models.Account
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_CommomLayout.cshtml";
+}
+
+
+<div class="row justify-content-md-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1>Profile</h1>
+            </div>
+            <div class="card-body">
+                <h3 class="text-danger text-center">@ViewBag.error</h3>
+                <h3 class="text-info text-center">@ViewBag.updateStatus</h3>
+                @using (Html.BeginForm("Profile", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Email)
+                        @Html.TextBoxFor(m => Model.Email, "", new { @class = "form-control", @readonly = "true" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Name)
+                        @Html.TextBoxFor(m => Model.Name, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => Model.Name, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.CreateDate)
+                        @Html.TextBoxFor(m => Model.CreateDate, "", new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="form-group">
+                        @Html.HiddenFor(m => Model.RoleID)
+                        @Html.HiddenFor(m => Model.Status)
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.Password)
+                        @Html.PasswordFor(m => Model.Password, new { @class = "form-control", @placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => Model.RePassword)
+                        @Html.PasswordFor(m => Model.RePassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                        @Html.ValidationMessageFor(m => m.RePassword, "", new { @class = "badge badge-danger" })
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" name="submit" class="btn btn-primary py-3 px-4" value="Update" />
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
